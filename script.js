@@ -21,19 +21,6 @@ mezocliq = (function() {
                 document.location = e.target.location.pathname;
             }
         },
-        player = [],
-        isMobile = function() {
-            /*
-            var login = document.querySelector('a[title=Login]'),
-                right = document.querySelector('div.right'),
-                bottom = document.querySelector('div.bottom');
-
-            return (login !== null && window.getComputedStyle(login).display === 'none')
-                || (right !== null && window.getComputedStyle(right).display === 'none')
-                || (bottom !== null && window.getComputedStyle(bottom).display === 'none');
-            */
-            return Math.max(document.documentElement.clientWidth, window.innerWidth || 0) < 1280;
-        },
         main = function() {
             var instance,
                 links = document.querySelectorAll('section nav a'),
@@ -83,42 +70,6 @@ mezocliq = (function() {
 
             icon.addEventListener('click', toggleMenu);
             nav('header nav p');
-        },
-        video = function() {
-            var el = document.querySelector('main').querySelector('video'),
-                iOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream,
-                instance;
-
-            if (el !== null) {
-                if (!iOS) {
-                    instance = player.length;
-                    player[instance] = videojs(el, {
-                        'controls': true,
-                        'autoplay': false
-                    });
-
-                    el.addEventListener('ended', function() {
-                        player[instance].exitFullscreen().reset().initChildren();
-                    });
-
-                    el.parentNode.addEventListener('click', function() {
-                        ga('send', 'event', 'Video', 'play', player[instance].currentSrc());
-                    });
-                }
-                else {
-                    el.setAttribute('controls', '');
-                }
-            }
-        },
-        videoPlayerDispose = function(page) {
-            var oldVideo = page.querySelector('video'),
-                newVideo = document.querySelector('main').querySelector('video'),
-                instance;
-
-            if (oldVideo !== null) {
-                instance = newVideo === null ? player.length - 1 : player.length - 2;
-                player[instance].dispose();
-            }
         },
         autoAdvanceTimeout,
         autoAdvanceInterval,
@@ -342,7 +293,6 @@ mezocliq = (function() {
                 xhr.send();
             }
         },
-        /* grid */
         currentSlide,
         cells,
         gridEl,
@@ -365,6 +315,9 @@ mezocliq = (function() {
 
             gridEl.className = 'grid';
             container.appendChild(gridEl);
+        },
+        isMobile = function() {
+            return Math.max(document.documentElement.clientWidth, window.innerWidth || 0) < 1280;
         },
         resize = function() {
             var page = document.querySelector('main:not(.animating)');
@@ -423,10 +376,11 @@ mezocliq = (function() {
 
             stateChangeAllowed = false;
 
-            // if going forward, use animation (targetSlide + 1 - 1)
-            // if going backward, use animation (targetSlide + 1)
-            // if going forward > 1, also replace url of (targetSlide + 1 - 1) with (currentSlide + 1)
-            // if going backward < 1, also replace url of (targetSlide + 1 + 1) with (currentSlide + 1)
+            // General guide:
+            // - if going forward, use animation (targetSlide + 1 - 1)
+            // - if going backward, use animation (targetSlide + 1)
+            // - if going forward by > 1, also replace url of (targetSlide + 1 - 1) with (currentSlide + 1)
+            // - if going backward by < 1, also replace url of (targetSlide + 1 + 1) with (currentSlide + 1)
 
             if (currentSlide === 4 && targetSlide === 3) { // solution subpage to coordinates main page
                 animation = 3;
@@ -438,13 +392,6 @@ mezocliq = (function() {
                 replaceBg('img/slide-1', '/img/slide-' + (currentSlide + 1));
                 replaceBg('img/slide-2', '/img/slide-' + (targetSlide + 1));
             }
-/*
-            else if (targetSlide === 6) {
-                animation = 1;
-                replaceBg('img/slide-1', '/img/slide-' + (currentSlide + 1));
-                replaceBg('img/slide-2', '/img/slide-' + (targetSlide + 1));
-            }
-*/
             else if (targetSlide === currentSlide + 1) {
                 animation = targetSlide; // targetSlide + 1 - 1
             }
@@ -571,7 +518,7 @@ mezocliq = (function() {
                     }
                 }
             }
-            //css = o.join(', ') +  ' { background-image: ' + url.replace('img', '/img').replace(source, target) + '; }';
+            // css = o.join(', ') +  ' { background-image: ' + url.replace('img', '/img').replace(source, target) + '; }';
             css = o.join('\n');
             tag.id = 'transition';
             tag.appendChild(document.createTextNode('')); // webkit hack
@@ -591,6 +538,43 @@ mezocliq = (function() {
                 slideBg = new Image();
 
             if (!isMobile()) slideBg.src = '/img/slide-' + (slide + 1) + '.jpg';
+        },
+        player = [],
+        video = function() {
+            var el = document.querySelector('main').querySelector('video'),
+                iOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream,
+                instance;
+
+            if (el !== null) {
+                if (!iOS) {
+                    instance = player.length;
+                    player[instance] = videojs(el, {
+                        'controls': true,
+                        'autoplay': false
+                    });
+
+                    el.addEventListener('ended', function() {
+                        player[instance].exitFullscreen().reset().initChildren();
+                    });
+
+                    el.parentNode.addEventListener('click', function() {
+                        ga('send', 'event', 'Video', 'play', player[instance].currentSrc());
+                    });
+                }
+                else {
+                    el.setAttribute('controls', '');
+                }
+            }
+        },
+        videoPlayerDispose = function(page) {
+            var oldVideo = page.querySelector('video'),
+                newVideo = document.querySelector('main').querySelector('video'),
+                instance;
+
+            if (oldVideo !== null) {
+                instance = newVideo === null ? player.length - 1 : player.length - 2;
+                player[instance].dispose();
+            }
         },
         i;
 
@@ -624,6 +608,23 @@ mezocliq = (function() {
     };
 })();
 
+
+/*
+FT FastClick from https://github.com/ftlabs/fastclick/blob/master/lib/fastclick.js
+Copyright (c) 2014 The Financial Times Ltd.
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+*/
 ;(function () {
     'use strict';
 
