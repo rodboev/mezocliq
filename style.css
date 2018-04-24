@@ -1370,29 +1370,8 @@ main.coordinates:not(.inner) section nav {
     .coordinates:not(.inner) .contacts a span {
         font-size: 1.9vw;
     }
-    .coordinates:not(.inner) .contacts a:nth-of-type(1) {
-        width: 23.125%;
-    }
-    .coordinates:not(.inner) .contacts a:nth-of-type(2) {
-        width: 18.5%;
-    }
-    .coordinates:not(.inner) .contacts a:nth-of-type(3) {
-        width: 26.875%;
-    }
-    .coordinates:not(.inner) .contacts a:nth-of-type(4) {
-        width: 31.5%;
-    }
-    .coordinates.inner .contacts a:nth-of-type(1) {
-        width: 21%;
-    }
-    .coordinates.inner .contacts a:nth-of-type(2) {
-        width: 21%;
-    }
-    .coordinates.inner .contacts a:nth-of-type(3) {
-        width: 26%;
-    }
-    .coordinates.inner .contacts a:nth-of-type(4) {
-        width: 32%;
+    .coordinates.inner .contacts a {
+        width: calc(100%/3);
     }
     .coordinates .top {
         display: flex;
