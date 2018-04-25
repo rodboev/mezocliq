@@ -484,16 +484,13 @@ main:not(.home) section nav p.selected::before {
     background-size: contain;
     background-position: center;
 }
-.contacts a:nth-child(1)::before {
+.contacts .vikas::before {
     background-image: url('/img/thumb-vikas-kapoor.jpg');
 }
-.contacts a:nth-child(2)::before {
+.contacts .brad::before {
     background-image: url('/img/thumb-brad-olson.jpg');
 }
-.contacts a:nth-child(3)::before {
-    background-image: url('/img/thumb-yuri-shtivelman.jpg');
-}
-.contacts a:nth-child(4)::before {
+.contacts .leslie::before {
     background-image: url('/img/thumb-leslie-stevens.jpg');
 }
 .coordinates:not(.inner) .contacts a {
