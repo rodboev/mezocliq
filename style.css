@@ -484,13 +484,13 @@ main:not(.home) section nav p.selected::before {
     background-size: contain;
     background-position: center;
 }
-.contacts .vikas::before {
+.contacts a[href*='vikas-kapoor']::before {
     background-image: url('/img/thumb-vikas-kapoor.jpg');
 }
-.contacts .brad::before {
+.contacts a[href*='brad-olson']::before {
     background-image: url('/img/thumb-brad-olson.jpg');
 }
-.contacts .leslie::before {
+.contacts a[href*='leslie-stevens']::before {
     background-image: url('/img/thumb-leslie-stevens.jpg');
 }
 .coordinates:not(.inner) .contacts a {
