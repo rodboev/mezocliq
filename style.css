@@ -1323,7 +1323,6 @@ main.coordinates:not(.inner) section nav {
     }
     .contacts a {
         text-align: center;
-        /*width: calc(100%/3);*/
         vertical-align: middle;
         display: block;
         margin-top: 0;
@@ -1368,7 +1367,7 @@ main.coordinates:not(.inner) section nav {
         font-size: 1.9vw;
     }
     .coordinates.inner .contacts a {
-        width: calc(100%/3);
+        flex-grow: 1;
     }
     .coordinates .top {
         display: flex;
